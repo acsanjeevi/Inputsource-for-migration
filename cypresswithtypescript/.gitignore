@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Cypress generated output
+mochawesome-report/
+cypress/screenshots/
+cypress/videos/
+
+# TypeScript build output
+dist/
+*.js.map
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

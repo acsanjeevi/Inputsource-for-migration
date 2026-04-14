@@ -1,0 +1,63 @@
+name: Cypress E2E Tests — SauceDemo
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    name: Run Cypress E2E Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        run: npm run cy:run
+        env:
+          CYPRESS_BASE_URL: https://www.saucedemo.com
+
+      - name: Merge Mochawesome JSON reports
+        if: always()
+        run: npm run cy:merge
+
+      - name: Generate merged HTML report
+        if: always()
+        run: npm run cy:report
+
+      - name: Upload Mochawesome HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-mochawesome-report
+          path: mochawesome-report/
+          retention-days: 30
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+          retention-days: 7
+
+      - name: Upload videos on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos/
+          retention-days: 7

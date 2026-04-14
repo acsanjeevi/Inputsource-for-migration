@@ -1,0 +1,10 @@
+{
+  "expectedProductCount": 6,
+  "cartItemCount": 4,
+  "sortOptions": {
+    "nameAZ": "az",
+    "nameZA": "za",
+    "priceLowHigh": "lohi",
+    "priceHighLow": "hilo"
+  }
+}

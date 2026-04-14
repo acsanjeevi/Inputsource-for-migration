@@ -1,0 +1,21 @@
+{
+  "name": "saucedemo-cypress-automation",
+  "version": "1.0.0",
+  "description": "ICEPOT Framework — SauceDemo Cypress + TypeScript UI Automation",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --reporter mochawesome --reporter-options reportDir=mochawesome-report/json,overwrite=false,html=false,json=true",
+    "cy:report": "node scripts/generate-report.js",
+    "cy:all": "npm run cy:run && npm run cy:report",
+    "cy:all:force": "npm run cy:run; npm run cy:report"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "cypress": "^13.6.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0",
+    "typescript": "^5.3.3"
+  }
+}
