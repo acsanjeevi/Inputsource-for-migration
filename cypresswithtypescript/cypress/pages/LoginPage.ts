@@ -10,11 +10,19 @@ export class LoginPage {
 
   /** Navigate to the application root (login page). */
   navigate(): void {
-    // Clear localStorage so the app always shows the login form (not the
-    // inventory page), even when testIsolation:false keeps the session alive.
-    cy.clearLocalStorage();
     // Increase the per-call timeout above the global value for first cold load.
     cy.visit('/', { timeout: 120000 });
+  }
+
+  prepareForNewAttempt(): void {
+    cy.clearLocalStorage();
+    cy.get('body').then(($body) => {
+      if ($body.find(LoginSelectors.errorButton).length > 0) {
+        cy.get(LoginSelectors.errorButton).click();
+      }
+    });
+    cy.get(LoginSelectors.usernameInput).clear();
+    cy.get(LoginSelectors.passwordInput).clear();
   }
 
   enterUsername(username: string): void {

@@ -8,6 +8,7 @@
  */
 
 import { LoginPage } from '../../pages/LoginPage';
+import { AuthBusiness } from '../../business/AuthBusiness';
 import type { Users } from '../../types';
 
 const loginPage = new LoginPage();
@@ -22,7 +23,7 @@ describe('Login Module — SauceDemo', () => {
   });
 
   beforeEach(() => {
-    loginPage.navigate();
+    AuthBusiness.ensureLoginPage();
   });
 
   // ── Positive Scenarios ──────────────────────────────────────────────────

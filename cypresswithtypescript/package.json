@@ -8,7 +8,7 @@
     "cy:run": "cypress run --reporter mochawesome --reporter-options reportDir=mochawesome-report/json,overwrite=false,html=false,json=true",
     "cy:report": "node scripts/generate-report.js",
     "cy:all": "npm run cy:run && npm run cy:report",
-    "cy:all:force": "npm run cy:run; npm run cy:report"
+    "cy:all:force": "node scripts/run-all-force.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

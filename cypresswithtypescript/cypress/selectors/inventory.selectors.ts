@@ -12,6 +12,7 @@ export const InventorySelectors = {
   menuCloseButton:    '#react-burger-cross-btn',
   allItemsLink:       '#inventory_sidebar_link',
   logoutLink:         '#logout_sidebar_link',
+  resetAppStateLink:  '#reset_sidebar_link',
   sortDropdown:       '[data-test="product-sort-container"]',
   productNames:       '.inventory_item_name',
   productPrices:      '.inventory_item_price',

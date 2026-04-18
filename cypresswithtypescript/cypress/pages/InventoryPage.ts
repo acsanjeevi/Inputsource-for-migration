@@ -16,23 +16,47 @@ export class InventoryPage {
 
   /** Opens the hamburger navigation menu and waits for the close button to confirm it is open. */
   openMainMenu(): void {
-    cy.get(InventorySelectors.menuButton).click();
-    cy.get(InventorySelectors.menuCloseButton).should('be.visible');
+    cy.get('body').then(($body) => {
+      const menuAlreadyOpen = $body.find(InventorySelectors.allItemsLink).is(':visible');
+      if (!menuAlreadyOpen) {
+        cy.get(InventorySelectors.menuButton).click({ force: true });
+      }
+    });
+    cy.get(InventorySelectors.allItemsLink).should('be.visible');
   }
 
   closeMainMenu(): void {
-    cy.get(InventorySelectors.menuCloseButton).click();
+    cy.get('body').then(($body) => {
+      if ($body.find(InventorySelectors.allItemsLink).is(':visible')) {
+        cy.get(InventorySelectors.menuCloseButton).click({ force: true });
+      }
+    });
   }
 
   /** Reopens the main menu and clicks the "All Items" link. */
   clickAllItems(): void {
     this.openMainMenu();
-    cy.get(InventorySelectors.allItemsLink).click();
+    cy.get(InventorySelectors.allItemsLink).should('be.visible').click({ force: true });
+  }
+
+  resetAppState(): void {
+    this.openMainMenu();
+    cy.get(InventorySelectors.resetAppStateLink).should('be.visible').click({ force: true });
+    this.closeMainMenu();
+    cy.get(InventorySelectors.cartBadge).should('not.exist');
+  }
+
+  resetAppStateAndReturnToInventory(): void {
+    this.openMainMenu();
+    cy.get(InventorySelectors.resetAppStateLink).should('be.visible').click({ force: true });
+    cy.get(InventorySelectors.allItemsLink).should('be.visible').click({ force: true });
+    cy.get(InventorySelectors.cartBadge).should('not.exist');
+    this.verifyOnInventoryPage();
   }
 
   /** Opens main menu and triggers logout. */
   clickLogout(): void {
-    cy.get(InventorySelectors.logoutLink).click();
+    cy.get(InventorySelectors.logoutLink).should('be.visible').click({ force: true });
   }
 
   /**

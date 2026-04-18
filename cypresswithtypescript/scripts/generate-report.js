@@ -14,11 +14,13 @@ const os           = require('os');
 const path         = require('path');
 const fs           = require('fs');
 
+const REPORT_FILENAME = 'SauceDemo-E2E-Report';
+
 const projectRoot = path.resolve(__dirname, '..');
 const jsonDir     = path.join(projectRoot, 'mochawesome-report', 'json');
 const mergedFile  = path.join(projectRoot, 'mochawesome-report', 'merged.json');
 const reportDir   = path.join(projectRoot, 'mochawesome-report');
-const reportFile  = path.join(reportDir, 'index.html');
+const reportFile  = path.join(reportDir, `${REPORT_FILENAME}.html`);
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -71,7 +73,7 @@ console.log(`    Title    : ${reportTitle}`);
 console.log(`    Report   : ${reportFile}`);
 
 execSync(
-  `npx marge "${mergedFile}" --reportDir "${reportDir}" --reportFilename index --inline --reportTitle "${reportTitle}"`,
+  `npx marge "${mergedFile}" --reportDir "${reportDir}" --reportFilename ${REPORT_FILENAME} --inline --reportTitle "${reportTitle}"`,
   { stdio: 'inherit', cwd: projectRoot }
 );
 

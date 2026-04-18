@@ -7,5 +7,6 @@ export const LoginSelectors = {
   passwordInput:      '#password',
   loginButton:        '#login-button',
   errorMessage:       '[data-test="error"]',
+  errorButton:        '[data-test="error-button"]',
   changePasswordOk:   '[data-test="change-password-ok"]',
 } as const;

@@ -12,6 +12,28 @@ const inventoryPage = new InventoryPage();
  */
 export class AuthBusiness {
 
+  static ensureLoginPage(): void {
+    const baseUrl = String(Cypress.config('baseUrl') || '').replace(/\/$/, '');
+
+    cy.url().then((currentUrl) => {
+      if (currentUrl === 'about:blank') {
+        loginPage.navigate();
+        return;
+      }
+
+      const normalizedUrl = currentUrl.replace(/\/$/, '');
+      if (normalizedUrl === baseUrl) {
+        loginPage.prepareForNewAttempt();
+        return;
+      }
+
+      this.logout();
+      loginPage.prepareForNewAttempt();
+    });
+
+    cy.get('#login-button').should('be.visible');
+  }
+
   /**
    * Full login flow: navigate → login with retry → verify inventory page.
    * This is the canonical setup step for all authenticated test scenarios.
@@ -23,6 +45,33 @@ export class AuthBusiness {
   static loginAndVerifyInventory(username: string, password: string, maxRetries = 3): void {
     loginPage.navigate();
     loginPage.loginWithRetry(username, password, maxRetries);
+    inventoryPage.verifyOnInventoryPage();
+  }
+
+  static ensureAuthenticatedAtInventory(username: string, password: string, maxRetries = 3): void {
+    const baseUrl = String(Cypress.config('baseUrl') || '').replace(/\/$/, '');
+
+    cy.url().then((currentUrl) => {
+      if (currentUrl === 'about:blank') {
+        this.loginAndVerifyInventory(username, password, maxRetries);
+        return;
+      }
+
+      const normalizedUrl = currentUrl.replace(/\/$/, '');
+      if (normalizedUrl === baseUrl) {
+        loginPage.prepareForNewAttempt();
+        loginPage.loginWithRetry(username, password, maxRetries);
+        return;
+      }
+
+      if (currentUrl.includes('/inventory')) {
+        inventoryPage.resetAppState();
+        return;
+      }
+
+      inventoryPage.resetAppStateAndReturnToInventory();
+    });
+
     inventoryPage.verifyOnInventoryPage();
   }
 
